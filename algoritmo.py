@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 ##############################################################################
-##                 Método para generar circulo en el dominio de fourier     ##
+##           Método para generar circulo en el dominio de fourier           ##
 ##############################################################################  
 def getFilters(r,width,height):
     w_ =width/2
@@ -16,7 +16,7 @@ def getFilters(r,width,height):
     cH = ~cL
     return (cL, cH)
 ##############################################################################
-##                 Método para Obtener el contraste de la imagen            ##
+##            Método para Obtener el contraste de la imagen                 ##
 ##############################################################################  
 def getContrast(img):
     norm_image = cv2.normalize(img, None, alpha=0, beta=1, norm_type=cv2.NORM_MINMAX, dtype=cv2.CV_32F)
@@ -34,7 +34,7 @@ def algoritmo(imgsrc):
         th_vasos = px_total*0.03
         contrast = getContrast(img)
         ##############################################################
-        ##                      Aplicación de filtro                ##
+        ##                    Aplicación de filtro                  ##
         ##############################################################
         ft = np.fft.fftshift(np.fft.fft2(img))
         #   Filtro Low Pass
@@ -84,7 +84,7 @@ def algoritmo(imgsrc):
         #   Búsqueda de la posición del disco óptico   
         b =np.where(C == np.amax(C))[0]
         
-        #   Busqueda del máximo en low pass
+        #   Búsqueda del máximo en low pass
         img_disco = np.zeros(np.shape(img))
         ind_disco= np.arange(round(y[max(b[0]-1,1)]),round(y[min(b[0]+1,12)]),1)
         
@@ -145,8 +145,7 @@ def algoritmo(imgsrc):
         plt.contour(img_macula, colors= "cyan")
         #Área de busqueda disco
         plt.plot(linea1,[1, height],color="y")
-        plt.plot(linea2,[1, height],color="y")
-        
+        plt.plot(linea2,[1, height],color="y")        
         #Área de busqueda macula
         plt.plot([ind_x[0],ind_x[len(ind_x)-1]],[ind[0],ind[0]], color="g")
         plt.plot([ind_x[0],ind_x[len(ind_x)-1]],[ind[len(ind)-1],ind[len(ind)-1]], color="g")
@@ -156,6 +155,7 @@ def algoritmo(imgsrc):
         plt.subplot(222)
         C= np.reshape(C,[12,])
         plt.bar(y, C,width=50, color="b")
+        #   Área de búsqueda disco
         plt.plot(linea1,[1, np.max(C)],color="r")
         plt.plot(linea2,[1, np.max(C)],color="r")
         #   Gráfico de la imagen filtrada en low pass
@@ -163,9 +163,10 @@ def algoritmo(imgsrc):
         plt.imshow(abs(low_filtered_image))
         plt.contour(img_disco,colors="red")
         plt.contour(img_macula, colors= "cyan")
+        #   Área de búsqueda disco
         plt.plot(linea1,[1, height],color="y")
         plt.plot(linea2,[1, height],color="y")
-        #cuadro de busqueda
+        #   Cuadro de búsqueda
         plt.plot([ind_x[0],ind_x[len(ind_x)-1]],[ind[0],ind[0]], color="g")
         plt.plot([ind_x[0],ind_x[len(ind_x)-1]],[ind[len(ind)-1],ind[len(ind)-1]],color="g")
         plt.plot([ind_x[len(ind_x)-1], ind_x[len(ind_x)-1]],[ind[0], ind[len(ind)-1]],color="g")
@@ -182,6 +183,7 @@ def menu():
     while(1):
         opcion = ""
         while (not opcion.isdigit()):
+            print("Seleccione el dataset a utilizar: ")
             print("1. DRIMDB")
             print("2. DRIVE")
             print("3. Salir")
